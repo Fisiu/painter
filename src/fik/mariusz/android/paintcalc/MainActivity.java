@@ -1,14 +1,16 @@
 package fik.mariusz.android.paintcalc;
 
-import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -22,22 +24,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private double w, l, h;
 
-	private int room = 0;
+	private List<Room> roomList;
 	private double total = 0.0;
 
-	public int getRoom() {
-		return room;
-	}
-
-	public void setRoom(int room) {
-		this.room = room;
-	}
-
-	public double getTotal() {
+	double getTotal() {
 		return total;
 	}
 
-	public void setTotal(double total) {
+	void setTotal(double total) {
 		this.total = total;
 	}
 
@@ -53,13 +47,19 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		mRooms = (TextView) findViewById(R.id.rooms);
 		mTotal = (TextView) findViewById(R.id.total);
-		resetItems();
+
+		roomList = new ArrayList<Room>();
 	}
 
-	private void resetItems() {
-		if (mRooms != null && mTotal != null) {
-			mRooms.setText("" + getRoom());
-			mTotal.setText("" + getTotal());
+	private void removeLatestRoom() {
+		// TODO Remove the latest added room
+	}
+
+	/** Clear the list with all rooms */
+	private void removeAllRooms() {
+		if (!roomList.isEmpty()) {
+			roomList.clear();
+			setTotal(0.0);
 		}
 	}
 
@@ -91,10 +91,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		switch (requestCode) {
 		case ADD_NEW_ROOM:
 			if (resultCode == Activity.RESULT_OK) {
+				// Add room
 				w = data.getDoubleExtra(AddRoom.WIDTH_VALUE, 0.0);
 				l = data.getDoubleExtra(AddRoom.LENGHT_VALUE, 0.0);
 				h = data.getDoubleExtra(AddRoom.HEIGHT_VALUE, 0.0);
-				Toast.makeText(this, "W=" + w + " L=" + l + " H=" + h, Toast.LENGTH_SHORT).show();
+				addRoom(new Room(w, l, h));
 			}
 			break;
 
@@ -103,6 +104,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void addRoom(Room room) {
+		roomList.add(room);
+		setTotal(getTotal() + room.totalArea());
+		// update UI
+		mRooms.setText("" + roomList.size());
+		mTotal.setText("" + getTotal());
 	}
 
 }
