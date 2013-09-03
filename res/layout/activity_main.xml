@@ -39,8 +39,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/button_add_room"
+        android:layout_alignBottom="@id/button_add_room"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:text="@string/button_reset" />
 
     <TextView
@@ -78,8 +79,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/button_reset"
+        android:layout_alignBaseline="@id/button_reset"
+        android:layout_alignBottom="@id/button_reset"
+        android:layout_toLeftOf="@id/button_reset"
         android:text="@string/button_remove_last" />
 
 </RelativeLayout>
