@@ -51,18 +51,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		roomList = new ArrayList<Room>();
 	}
 
-	private void removeLatestRoom() {
-		// TODO Remove the latest added room
-	}
-
-	/** Clear the list with all rooms */
-	private void removeAllRooms() {
-		if (!roomList.isEmpty()) {
-			roomList.clear();
-			setTotal(0.0);
-		}
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -102,16 +90,32 @@ public class MainActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	/** Add room to the list */
 	private void addRoom(Room room) {
 		roomList.add(room);
 		setTotal(getTotal() + room.totalArea());
-		// update UI
+		updateUI();
+	}
+
+	private void removeLastRoom() {
+		// TODO Remove the latest added room
+	}
+
+	/** Clear the list with all rooms */
+	private void removeAllRooms() {
+		if (!roomList.isEmpty()) {
+			roomList.clear();
+			setTotal(0.0);
+		}
+		updateUI();
+	}
+
+	/** update UI labels */
+	private void updateUI() {
 		mRooms.setText("" + roomList.size());
 		mTotal.setText("" + getTotal());
 	}
-
 }
