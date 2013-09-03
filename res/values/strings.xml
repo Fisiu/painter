@@ -13,5 +13,6 @@
     <string name="label_width">Width</string>
     <string name="label_height">Height</string>
     <string name="room_dimension">Room dimenstion</string>
+    <string name="button_remove_last">Remove last</string>
 
 </resources>
