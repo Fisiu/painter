@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddRoom extends Activity implements OnClickListener {
 
@@ -30,19 +31,26 @@ public class AddRoom extends Activity implements OnClickListener {
 		mWidth = (EditText) findViewById(R.id.input_w);
 		mHeight = (EditText) findViewById(R.id.input_h);
 
-		mWidth.requestFocus();
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.button_add:
-			Intent result = new Intent();
-			result.putExtra(LENGHT_VALUE, getDoubleValue(mLenght));
-			result.putExtra(WIDTH_VALUE, getDoubleValue(mWidth));
-			result.putExtra(HEIGHT_VALUE, getDoubleValue(mHeight));
-			setResult(Activity.RESULT_OK, result);
-			finish();
+			double l = getDoubleValue(mLenght);
+			double w = getDoubleValue(mWidth);
+			double h = getDoubleValue(mHeight);
+			// Check if dimenstion is > 0
+			if (l > 0 && w > 0 && h > 0) {
+				Intent result = new Intent();
+				result.putExtra(LENGHT_VALUE, l);
+				result.putExtra(WIDTH_VALUE, w);
+				result.putExtra(HEIGHT_VALUE, h);
+				setResult(Activity.RESULT_OK, result);
+				finish();
+			} else {
+				Toast.makeText(this, "One or more dimension empty", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		default:
 			break;
