@@ -3,15 +3,7 @@ package fik.mariusz.android.paintcalc;
 public class Room {
 
 	// Fields to store room dimensions
-	private double w, l, h;
-
-	double getW() {
-		return w;
-	}
-
-	void setW(double w) {
-		this.w = w;
-	}
+	private double l, w, h;
 
 	double getL() {
 		return l;
@@ -19,6 +11,14 @@ public class Room {
 
 	void setL(double l) {
 		this.l = l;
+	}
+
+	double getW() {
+		return w;
+	}
+
+	void setW(double w) {
+		this.w = w;
 	}
 
 	double getH() {
@@ -32,16 +32,16 @@ public class Room {
 	/**
 	 * Creates room with specified sizes.
 	 * 
-	 * @param w
-	 *            Room width
 	 * @param l
 	 *            Room length
+	 * @param w
+	 *            Room width
 	 * @param h
 	 *            Room height
 	 */
-	public Room(double w, double l, double h) {
-		this.w = w;
+	public Room(double l, double w, double h) {
 		this.l = l;
+		this.w = w;
 		this.h = h;
 	}
 

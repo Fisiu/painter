@@ -15,7 +15,7 @@ public class AddRoom extends Activity implements OnClickListener {
 	static final String LENGHT_VALUE = "lenght";
 	static final String HEIGHT_VALUE = "height";
 	private Button mButtonAccept;
-	private EditText mWidth, mLenght, mHeight;
+	private EditText mLenght, mWidth, mHeight;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +26,11 @@ public class AddRoom extends Activity implements OnClickListener {
 		mButtonAccept = (Button) findViewById(R.id.button_add);
 		mButtonAccept.setOnClickListener(this);
 
-		mWidth = (EditText) findViewById(R.id.input_w);
 		mLenght = (EditText) findViewById(R.id.input_l);
+		mWidth = (EditText) findViewById(R.id.input_w);
 		mHeight = (EditText) findViewById(R.id.input_h);
+
+		mWidth.requestFocus();
 	}
 
 	@Override
@@ -36,8 +38,8 @@ public class AddRoom extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.button_add:
 			Intent result = new Intent();
-			result.putExtra(WIDTH_VALUE, getDoubleValue(mWidth));
 			result.putExtra(LENGHT_VALUE, getDoubleValue(mLenght));
+			result.putExtra(WIDTH_VALUE, getDoubleValue(mWidth));
 			result.putExtra(HEIGHT_VALUE, getDoubleValue(mHeight));
 			setResult(Activity.RESULT_OK, result);
 			finish();

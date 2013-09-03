@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button mButtonReset;
 	private Button mButtonRemoveLast;
 
-	private double w, l, h;
+	private double l, w, h;
 
 	private List<Room> roomList;
 	private double total = 0.0;
@@ -52,6 +52,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		mTotal = (TextView) findViewById(R.id.total);
 
 		roomList = new ArrayList<Room>();
+		updateUI();
 	}
 
 	@Override
@@ -86,8 +87,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		case ADD_NEW_ROOM:
 			if (resultCode == Activity.RESULT_OK) {
 				// Add room
-				w = data.getDoubleExtra(AddRoom.WIDTH_VALUE, 0.0);
 				l = data.getDoubleExtra(AddRoom.LENGHT_VALUE, 0.0);
+				w = data.getDoubleExtra(AddRoom.WIDTH_VALUE, 0.0);
 				h = data.getDoubleExtra(AddRoom.HEIGHT_VALUE, 0.0);
 				addRoom(new Room(w, l, h));
 			}

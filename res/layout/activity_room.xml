@@ -9,29 +9,12 @@
         android:orientation="vertical"
         android:padding="10dip" >
 
-        <!-- Width Label -->
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_length" />
-
-        <EditText
-            android:id="@+id/input_w"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="5dip"
-            android:hint="Room width"
-            android:inputType="numberDecimal"
-            android:singleLine="true" />
-
         <!-- Length Label -->
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_width" />
+            android:text="@string/label_length" />
 
         <EditText
             android:id="@+id/input_l"
@@ -40,6 +23,23 @@
             android:layout_marginBottom="10dip"
             android:layout_marginTop="5dip"
             android:hint="Room lenght"
+            android:inputType="numberDecimal"
+            android:singleLine="true" />
+
+        <!-- Width Label -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_width" />
+
+        <EditText
+            android:id="@+id/input_w"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginTop="5dip"
+            android:hint="Room width"
             android:inputType="numberDecimal"
             android:singleLine="true" />
 
