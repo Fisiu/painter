@@ -7,11 +7,15 @@
     <string name="text_total">Total:</string>
     <string name="text_rooms">Rooms:</string>
     <string name="button_reset">Reset</string>
-    <string name="total_unit">m²</string>
+    <string name="total_unit">mOne or more dimension emptyOne or more dimension emptyOne or more dimension emptyOne or more dimension empty²</string>
     <string name="label_length">Length</string>
     <string name="label_width">Width</string>
     <string name="label_height">Height</string>
     <string name="room_dimension">Room dimension</string>
     <string name="button_remove_last">Remove last</string>
+    <string name="hint_room_length">Room length</string>
+    <string name="hint_room_width">Room width</string>
+    <string name="hint_room_height">Room height</string>
+    <string name="toast_missing_dimension">One or more dimension empty</string>
 
 </resources>

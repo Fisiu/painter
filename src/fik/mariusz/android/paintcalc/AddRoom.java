@@ -49,7 +49,7 @@ public class AddRoom extends Activity implements OnClickListener {
 				setResult(Activity.RESULT_OK, result);
 				finish();
 			} else {
-				Toast.makeText(this, "One or more dimension empty", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.toast_missing_dimension, Toast.LENGTH_SHORT).show();
 			}
 			break;
 		default:
