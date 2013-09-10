@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:icon="@android:drawable/arrow_up_float"
+        android:inputType="numberDecimal"
+        android:key="pref_price"
+        android:title="@string/settings_price_title" />
+
+</PreferenceScreen>

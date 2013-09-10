@@ -6,15 +6,18 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private static final int ADD_NEW_ROOM = 1;
+	private static final int ACTION_SETTINGS = 11;
 
 	private TextView mRooms;
 	private TextView mTotal;
@@ -41,6 +44,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		setupActionBar();
+
 		mButtonAddRoom = (Button) findViewById(R.id.button_add_room);
 		mButtonAddRoom.setOnClickListener(this);
 		mButtonReset = (Button) findViewById(R.id.button_reset);
@@ -55,11 +60,29 @@ public class MainActivity extends Activity implements OnClickListener {
 		updateUI();
 	}
 
+	private void setupActionBar() {
+		getSupportActionBar().show();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			return true;
+		case R.id.action_settings:
+			Intent settings = new Intent(this, SettingsActivity.class);
+			startActivityForResult(settings, ACTION_SETTINGS);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
