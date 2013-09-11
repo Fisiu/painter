@@ -27,12 +27,11 @@
             android:label="@string/room_dimension"
             android:theme="@style/AppDialogTheme"
             android:windowSoftInputMode="stateVisible" >
-        </activity> <!-- android:parentActivityName="fik.mariusz.android.paintcalc.MainActivity" > -->
-
+        </activity>
         <activity
             android:name="fik.mariusz.android.paintcalc.SettingsActivity"
             android:label="@string/settings_title"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+            android:parentActivityName="fik.mariusz.android.paintcalc.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fik.mariusz.android.paintcalc.MainActivity" />

@@ -1,11 +1,14 @@
 package fik.mariusz.android.paintcalc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private TextView mRooms;
 	private TextView mTotal;
+	private TextView mCost;
+	private TextView mCurrency;
 
 	private Button mButtonAddRoom;
 	private Button mButtonReset;
@@ -30,6 +35,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private List<Room> roomList;
 	private double total = 0.0;
+
+	private SharedPreferences sP;
 
 	double getTotal() {
 		return total;
@@ -46,6 +53,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		setupActionBar();
 
+		sP = PreferenceManager.getDefaultSharedPreferences(this);
+
 		mButtonAddRoom = (Button) findViewById(R.id.button_add_room);
 		mButtonAddRoom.setOnClickListener(this);
 		mButtonReset = (Button) findViewById(R.id.button_reset);
@@ -55,8 +64,18 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		mRooms = (TextView) findViewById(R.id.rooms);
 		mTotal = (TextView) findViewById(R.id.total);
+		mCost = (TextView) findViewById(R.id.cost);
+		mCurrency = (TextView) findViewById(R.id.currency);
 
 		roomList = new ArrayList<Room>();
+		updateUI();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// we need recalculate after changing settings
 		updateUI();
 	}
 
@@ -156,5 +175,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private void updateUI() {
 		mRooms.setText("" + roomList.size());
 		mTotal.setText("" + getTotal());
+		BigDecimal c = new BigDecimal(sP.getString(SettingsActivity.KEY_PREF_PRICE, "0.00"));
+		mCost.setText("" + c.multiply(new BigDecimal(getTotal())));
+		mCurrency.setText("" + sP.getString(SettingsActivity.KEY_PREF_CURRENCY, "PLN"));
 	}
 }

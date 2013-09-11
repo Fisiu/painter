@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/label_rooms"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="@string/text_total"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -61,7 +62,8 @@
         android:layout_alignBaseline="@+id/label_total"
         android:layout_alignBottom="@+id/label_total"
         android:layout_toRightOf="@+id/label_total"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -71,6 +73,8 @@
         android:layout_alignBaseline="@+id/total"
         android:layout_alignBottom="@+id/total"
         android:layout_toRightOf="@+id/total"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="@string/total_unit"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -83,5 +87,39 @@
         android:layout_alignBottom="@id/button_reset"
         android:layout_toLeftOf="@id/button_reset"
         android:text="@string/button_remove_last" />
+
+    <TextView
+        android:id="@+id/cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/label_cost"
+        android:layout_alignBottom="@+id/label_cost"
+        android:layout_toRightOf="@+id/label_cost"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/cost"
+        android:layout_alignBottom="@+id/cost"
+        android:layout_toRightOf="@+id/cost"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/label_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/label_total"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/label_cost"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

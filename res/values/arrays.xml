@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Currencies, don't translate -->
+    <string-array name="currency">
+        <item name="dollar">$</item>
+        <item name="pound">£</item>
+        <item name="euro">€</item>
+        <item name="zloty">zł</item>
+    </string-array>
+    <string-array name="currencyValues">
+        <item name="dollar">USD</item>
+        <item name="pound">GBP</item>
+        <item name="euro">EUR</item>
+        <item name="zloty">PLN</item>
+    </string-array>
+
+</resources>

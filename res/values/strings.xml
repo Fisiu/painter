@@ -17,5 +17,6 @@
     <string name="hint_room_width">Room width</string>
     <string name="hint_room_height">Room height</string>
     <string name="toast_missing_dimension">One or more dimension empty</string>
+    <string name="label_cost">Cost:</string>
 
 </resources>
