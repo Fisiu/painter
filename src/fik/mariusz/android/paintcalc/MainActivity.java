@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener {
@@ -33,6 +35,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	private double l, w, h;
 
+	private ListView roomListView;
+	ArrayAdapter<Room> aa;
 	private List<Room> roomList;
 	private double total = 0.0;
 
@@ -68,6 +72,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		mCurrency = (TextView) findViewById(R.id.currency);
 
 		roomList = new ArrayList<Room>();
+		roomListView = (ListView) findViewById(R.id.room_list);
+		
+		aa = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, roomList);
 		updateUI();
 	}
 
@@ -132,7 +139,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 				l = data.getDoubleExtra(AddRoom.LENGHT_VALUE, 0.0);
 				w = data.getDoubleExtra(AddRoom.WIDTH_VALUE, 0.0);
 				h = data.getDoubleExtra(AddRoom.HEIGHT_VALUE, 0.0);
-				addRoom(new Room(w, l, h));
+				addRoom(new Room(l, w, h));
 			}
 			break;
 
@@ -178,5 +185,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		BigDecimal c = new BigDecimal(sP.getString(SettingsActivity.KEY_PREF_PRICE, "0.00"));
 		mCost.setText("" + c.multiply(new BigDecimal(getTotal())));
 		mCurrency.setText("" + sP.getString(SettingsActivity.KEY_PREF_CURRENCY, "PLN"));
+		
+		// rebind listview items
+		roomListView.setAdapter(aa);
 	}
 }

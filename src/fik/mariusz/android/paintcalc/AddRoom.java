@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 public class AddRoom extends Activity implements OnClickListener {
 
-	static final String WIDTH_VALUE = "width";
 	static final String LENGHT_VALUE = "lenght";
+	static final String WIDTH_VALUE = "width";
 	static final String HEIGHT_VALUE = "height";
 	private Button mButtonAccept;
 	private EditText mLenght, mWidth, mHeight;

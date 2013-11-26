@@ -59,4 +59,11 @@ public class Room {
 	Double totalArea() {
 		return ceilingArea() + wallsArea();
 	}
+
+	@Override
+	public String toString() {
+		// get room sizes
+		return this.getL() + " * " + this.getW() + " * " + this.getH();
+	}
+
 }
