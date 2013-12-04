@@ -8,18 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/button_add_room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_add_room" />
-
     <TextView
         android:id="@+id/label_rooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button_add_room"
         android:padding="5dp"
         android:text="@string/text_rooms"
         android:textSize="12sp" />
@@ -34,16 +27,6 @@
         android:paddingRight="5dp"
         android:text="@string/text_total"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/button_reset"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/button_add_room"
-        android:layout_alignBottom="@id/button_add_room"
-        android:layout_alignParentRight="true"
-        android:text="@string/button_reset" />
 
     <TextView
         android:id="@+id/rooms"
@@ -78,16 +61,6 @@
         android:text="@string/total_unit"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Button
-        android:id="@+id/button_remove_last"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/button_reset"
-        android:layout_alignBottom="@id/button_reset"
-        android:layout_toLeftOf="@id/button_reset"
-        android:text="@string/button_remove_last" />
-
     <TextView
         android:id="@+id/cost"
         android:layout_width="wrap_content"
@@ -98,18 +71,6 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/currency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cost"
-        android:layout_alignBottom="@+id/cost"
-        android:layout_toRightOf="@+id/cost"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/label_cost"

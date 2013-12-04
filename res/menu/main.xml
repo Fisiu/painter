@@ -1,5 +1,24 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:painter="http://schemas.android.com/apk/res-auto" >
 
+    <item
+        android:id="@+id/action_add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/action_add_room"
+        painter:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/action_remove_last"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/action_remove_last"
+        painter:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/action_reset"
+        painter:showAsAction="ifRoom">
+    </item>
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"/>

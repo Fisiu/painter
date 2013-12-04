@@ -9,13 +9,4 @@
         android:key="pref_price"
         android:title="@string/settings_price_title" />
 
-    <ListPreference
-        android:defaultValue="PLN"
-        android:dialogIcon="@android:drawable/ic_menu_info_details"
-        android:entries="@array/currency"
-        android:entryValues="@array/currencyValues"
-        android:icon="@android:drawable/ic_dialog_info"
-        android:key="pref_currency"
-        android:title="@string/settings_currency_title" />
-
 </PreferenceScreen>

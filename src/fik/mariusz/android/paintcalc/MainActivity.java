@@ -1,25 +1,35 @@
 package fik.mariusz.android.paintcalc;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import fik.mariusz.android.paintcalc.model.Room;
+import fik.mariusz.android.paintcalc.utils.Utils;
 
-public class MainActivity extends ActionBarActivity implements OnClickListener {
+public class MainActivity extends ActionBarActivity implements OnItemClickListener, OnItemLongClickListener {
 
 	private static final int ADD_NEW_ROOM = 1;
 	private static final int ACTION_SETTINGS = 11;
@@ -27,28 +37,26 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private TextView mRooms;
 	private TextView mTotal;
 	private TextView mCost;
-	private TextView mCurrency;
 
-	private Button mButtonAddRoom;
-	private Button mButtonReset;
-	private Button mButtonRemoveLast;
+	private double l, w, h; // room dimensions
 
-	private double l, w, h;
-
+	private RoomAdapter roomAdapter; // adapter
+	private List<Room> roomList; // list with rooms
 	private ListView roomListView;
-	ArrayAdapter<Room> aa;
-	private List<Room> roomList;
-	private double total = 0.0;
 
-	private SharedPreferences sP;
+	// total area (from all rooms) to paint
+	private double total = 0.0;
 
 	double getTotal() {
 		return total;
 	}
 
 	void setTotal(double total) {
-		this.total = total;
+		this.total = Utils.roundToTwoDecimalPoints(total);
 	}
+
+	// preferences
+	private SharedPreferences sP;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +67,21 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		sP = PreferenceManager.getDefaultSharedPreferences(this);
 
-		mButtonAddRoom = (Button) findViewById(R.id.button_add_room);
-		mButtonAddRoom.setOnClickListener(this);
-		mButtonReset = (Button) findViewById(R.id.button_reset);
-		mButtonReset.setOnClickListener(this);
-		mButtonRemoveLast = (Button) findViewById(R.id.button_remove_last);
-		mButtonRemoveLast.setOnClickListener(this);
-
 		mRooms = (TextView) findViewById(R.id.rooms);
 		mTotal = (TextView) findViewById(R.id.total);
 		mCost = (TextView) findViewById(R.id.cost);
-		mCurrency = (TextView) findViewById(R.id.currency);
+
+		roomAdapter = new RoomAdapter(this);
 
 		roomList = new ArrayList<Room>();
+
+		// fake data to test UI and calculations
+		// populateWithFakeData(47);
+
 		roomListView = (ListView) findViewById(R.id.room_list);
-		
-		aa = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, roomList);
-		updateUI();
+		roomListView.setAdapter(roomAdapter);
+		roomListView.setOnItemClickListener(this);
+		recalculate();
 	}
 
 	@Override
@@ -83,11 +89,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		super.onResume();
 
 		// we need recalculate after changing settings
-		updateUI();
-	}
-
-	private void setupActionBar() {
-		getSupportActionBar().show();
+		recalculate();
 	}
 
 	@Override
@@ -106,28 +108,30 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			Intent settings = new Intent(this, SettingsActivity.class);
 			startActivityForResult(settings, ACTION_SETTINGS);
 			return true;
+		case R.id.action_add:
+			Intent intent = new Intent(this, AddRoom.class);
+			startActivityForResult(intent, ADD_NEW_ROOM);
+			return true;
+		case R.id.action_remove_last:
+			removeLastRoom();
+			return true;
+		case R.id.action_reset:
+			removeAllRooms();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.button_add_room:
-			Intent intent = new Intent(this, AddRoom.class);
-			startActivityForResult(intent, ADD_NEW_ROOM);
-			break;
-		case R.id.button_reset:
-			removeAllRooms();
-			break;
-		case R.id.button_remove_last:
-			removeLastRoom();
-			break;
-		default:
-			break;
-		}
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Toast.makeText(this, "Room " + position + " clicked [" + id + "]", Toast.LENGTH_SHORT).show();
+	}
 
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -149,11 +153,17 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	private void setupActionBar() {
+		getSupportActionBar().show();
+	}
+
 	/** Add room to the list */
 	private void addRoom(Room room) {
 		roomList.add(room);
 		setTotal(getTotal() + room.totalArea());
-		updateUI();
+		// Log.d("Total", "walls: " + room.wallsArea() + " ceiling: " +
+		// room.ceilingArea() + " | TOTAL: " + getTotal());
+		recalculate();
 	}
 
 	private void removeLastRoom() {
@@ -165,7 +175,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			// substract last room area from total area
 			setTotal(getTotal() - last.totalArea());
 			// update UI
-			updateUI();
+			recalculate();
 		}
 	}
 
@@ -174,19 +184,88 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		if (!roomList.isEmpty()) {
 			roomList.clear();
 			setTotal(0.0);
-			updateUI();
+			recalculate();
 		}
 	}
 
-	/** update UI labels */
-	private void updateUI() {
+	/** recalculate and update UI */
+	private void recalculate() {
 		mRooms.setText("" + roomList.size());
 		mTotal.setText("" + getTotal());
-		BigDecimal c = new BigDecimal(sP.getString(SettingsActivity.KEY_PREF_PRICE, "0.00"));
-		mCost.setText("" + c.multiply(new BigDecimal(getTotal())));
-		mCurrency.setText("" + sP.getString(SettingsActivity.KEY_PREF_CURRENCY, "PLN"));
-		
-		// rebind listview items
-		roomListView.setAdapter(aa);
+		final String cost = getRoomCost(sP.getString(SettingsActivity.KEY_PREF_PRICE, "0.00"), getTotal());
+		mCost.setText(cost);
+
+		// update listview items
+		roomAdapter.updateRooms(roomList);
+	}
+
+	private String getRoomCost(String price, double meters) {
+		BigDecimal c = new BigDecimal(price);
+		BigDecimal m = c.multiply(new BigDecimal(meters));
+		NumberFormat n = NumberFormat.getCurrencyInstance();
+		double money = m.doubleValue();
+		return n.format(money);
+	}
+
+	/**
+	 * Populate list with fake data. It allows to test UI layout and
+	 * calculations.
+	 * 
+	 * @param roomsCount
+	 *            Rooms count to be added to listview.
+	 */
+	@SuppressWarnings("unused")
+	private void populateWithFakeData(int roomsCount) {
+		Random random = new Random(47);
+		for (int i = 0; i < roomsCount; i++) {
+			double l = random.nextDouble() * 10;
+			double w = random.nextDouble() * 10;
+			double h = random.nextDouble() * 10;
+			if (l > 0 && w > 0 && h > 0) {
+				Room room = new Room(l, w, h);
+				addRoom(room);
+			}
+		}
+	}
+
+	class RoomAdapter extends BaseAdapter {
+
+		private List<Room> rooms = Collections.emptyList();
+		private final Context context;
+
+		public RoomAdapter(Context context) {
+			this.context = context;
+		}
+
+		public void updateRooms(List<Room> rooms) {
+			this.rooms = rooms;
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public int getCount() {
+			return rooms.size();
+		}
+
+		@Override
+		public Room getItem(int position) {
+			return rooms.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View view, ViewGroup parent) {
+			// TODO customize list item
+			View rootView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
+			TextView text = (TextView) rootView.findViewById(android.R.id.text1);
+
+			text.setText(getItem(position).toString());
+			return rootView;
+		}
+
 	}
 }

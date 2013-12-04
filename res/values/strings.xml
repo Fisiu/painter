@@ -3,16 +3,16 @@
 
     <string name="app_name">Paint Calc</string>
     <string name="action_settings">Settings</string>
-    <string name="button_add_room">Add room</string>
+    <string name="action_add_room">Add room</string>
+    <string name="action_remove_last">Remove last</string>
+    <string name="action_reset">Reset</string>
     <string name="text_total">Total:</string>
     <string name="text_rooms">Rooms:</string>
-    <string name="button_reset">Reset</string>
     <string name="total_unit">m²</string>
     <string name="label_length">Length</string>
     <string name="label_width">Width</string>
     <string name="label_height">Height</string>
     <string name="room_dimension">Room dimension</string>
-    <string name="button_remove_last">Remove last</string>
     <string name="hint_room_length">Room length</string>
     <string name="hint_room_width">Room width</string>
     <string name="hint_room_height">Room height</string>

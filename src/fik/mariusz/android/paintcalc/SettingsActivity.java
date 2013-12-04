@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -18,11 +17,9 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	private final int sdkVersion = Build.VERSION.SDK_INT;
 
 	static final String KEY_PREF_PRICE = "pref_price";
-	static final String KEY_PREF_CURRENCY = "pref_currency";
 
 	private SharedPreferences sharedPreferences;
 	private Preference mPrice;
-	private Preference mCurrency;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +56,6 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 			// save rounded value and set summary with current value
 			sharedPreferences.edit().putString(KEY_PREF_PRICE, output).commit();
 			mPrice.setSummary(getString(R.string.settings_price_summary) + ": " + output);
-		} else if (key.equals(KEY_PREF_CURRENCY)) {
-			mCurrency.setSummary(getString(R.string.settings_currency_summary) + ": " + sp.getString(key, ""));
 		}
 	}
 
@@ -90,13 +85,10 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 	private void findAllPreferences() {
 		mPrice = findPreference(KEY_PREF_PRICE);
-		mCurrency = findPreference(KEY_PREF_CURRENCY);
 	}
 
 	private void setSummary() {
 		mPrice.setSummary(getString(R.string.settings_price_summary) + ": "
 				+ sharedPreferences.getString(KEY_PREF_PRICE, "0"));
-		mCurrency.setSummary(getString(R.string.settings_currency_summary) + ": "
-				+ sharedPreferences.getString(KEY_PREF_CURRENCY, ""));
 	}
 }
