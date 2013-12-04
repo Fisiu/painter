@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Paint Calc</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="action_add_room">Dodaj pokój</string>
+    <string name="action_remove_last">Usuń ostatni</string>
+    <string name="action_reset">Wyczyść</string>
+    <string name="text_total">Razem:</string>
+    <string name="text_rooms">Pokoi:</string>
+    <string name="total_unit">m²</string>
+    <string name="label_length">Długość</string>
+    <string name="label_width">Szerokość</string>
+    <string name="label_height">Wysokość</string>
+    <string name="room_dimension">Wymiary pokoju</string>
+    <string name="hint_room_length">Długość pokoju</string>
+    <string name="hint_room_width">Szerokość pokoju</string>
+    <string name="hint_room_height">Wysokość pokoju</string>
+    <string name="toast_missing_dimension">Jeden z wymiarów pusty</string>
+    <string name="label_cost">Koszt:</string>
+
+</resources>

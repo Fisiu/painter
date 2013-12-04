@@ -4,7 +4,5 @@
     <string name="settings_title">Settings</string>
     <string name="settings_price_title">Price for 1m²</string>
     <string name="settings_price_summary">Current price</string>
-    <string name="settings_currency_title">Select currency</string>
-    <string name="settings_currency_summary">Currency</string>
 
 </resources>

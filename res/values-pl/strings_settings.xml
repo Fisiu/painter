@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings_title">Ustawienia</string>
+    <string name="settings_price_title">Cena za 1m²</string>
+    <string name="settings_price_summary">Aktualna cena</string>
+
+</resources>
