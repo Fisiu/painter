@@ -3,6 +3,7 @@ package fik.mariusz.android.paintcalc;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import fik.mariusz.android.paintcalc.utils.Constants;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -15,8 +16,6 @@ import android.view.MenuItem;
 public class SettingsActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 
 	private final int sdkVersion = Build.VERSION.SDK_INT;
-
-	static final String KEY_PREF_PRICE = "pref_price";
 
 	private SharedPreferences sharedPreferences;
 	private Preference mPrice;
@@ -51,10 +50,10 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-		if (key.equals(KEY_PREF_PRICE)) {
+		if (key.equals(Constants.KEY_PREF_PRICE)) {
 			String output = moneyFormater(sp.getString(key, "0.00"));
 			// save rounded value and set summary with current value
-			sharedPreferences.edit().putString(KEY_PREF_PRICE, output).commit();
+			sharedPreferences.edit().putString(Constants.KEY_PREF_PRICE, output).commit();
 			mPrice.setSummary(getString(R.string.settings_price_summary) + ": " + output);
 		}
 	}
@@ -84,11 +83,11 @@ public class SettingsActivity extends PreferenceActivity implements OnSharedPref
 	}
 
 	private void findAllPreferences() {
-		mPrice = findPreference(KEY_PREF_PRICE);
+		mPrice = findPreference(Constants.KEY_PREF_PRICE);
 	}
 
 	private void setSummary() {
 		mPrice.setSummary(getString(R.string.settings_price_summary) + ": "
-				+ sharedPreferences.getString(KEY_PREF_PRICE, "0"));
+				+ sharedPreferences.getString(Constants.KEY_PREF_PRICE, "0"));
 	}
 }

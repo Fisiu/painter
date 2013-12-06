@@ -23,12 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="fik.mariusz.android.paintcalc.AddRoom"
-            android:label="@string/room_dimension"
-            android:theme="@style/AppDialogTheme"
-            android:windowSoftInputMode="stateVisible" >
-        </activity>
-        <activity
             android:name="fik.mariusz.android.paintcalc.SettingsActivity"
             android:label="@string/settings_title"
             android:parentActivityName="fik.mariusz.android.paintcalc.MainActivity" >
