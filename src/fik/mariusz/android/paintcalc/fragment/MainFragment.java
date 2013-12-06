@@ -3,7 +3,6 @@ package fik.mariusz.android.paintcalc.fragment;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fik.mariusz.android.paintcalc.R;
 import fik.mariusz.android.paintcalc.model.Room;
+import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 import fik.mariusz.android.paintcalc.utils.Utils;
 
@@ -40,12 +41,13 @@ import fik.mariusz.android.paintcalc.utils.Utils;
  */
 public class MainFragment extends Fragment implements OnItemClickListener {
 
+	private static final String TAG = "MainFragment";
+
 	private TextView mRooms;
 	private TextView mTotal;
 	private TextView mCost;
 
 	private RoomAdapter roomAdapter; // adapter
-	private List<Room> roomList; // list with rooms
 	private ListView roomListView;
 
 	// total area (from all rooms) to paint
@@ -53,6 +55,9 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 	// preferences
 	private SharedPreferences sP;
+
+	// database handler
+	private DatabaseHelper databaseHandler;
 
 	double getTotal() {
 		return total;
@@ -72,7 +77,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 		setHasOptionsMenu(true);
 		sP = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		roomList = new ArrayList<Room>();
+		databaseHandler = DatabaseHelper.getInstance(getActivity());
 
 		// fake data to test UI and calculations
 		// populateWithFakeData(47);
@@ -90,11 +95,9 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		mCost = (TextView) view.findViewById(R.id.cost);
 		roomListView = (ListView) view.findViewById(R.id.room_list);
 
-		roomAdapter = new RoomAdapter(getActivity());
-
+		roomAdapter = new RoomAdapter(getActivity(), databaseHandler.getAllRooms());
 		roomListView.setAdapter(roomAdapter);
 		roomListView.setOnItemClickListener(this);
-		// recalculate();
 
 		return view;
 	}
@@ -103,7 +106,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 
-		// we need recalculate after changing settings
+		// recalculate before making fragment visible
 		recalculate();
 	}
 
@@ -137,40 +140,49 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		Toast.makeText(getActivity(), "Room " + position + " clicked [" + id + "]", Toast.LENGTH_SHORT).show();
 	}
 
-	/** Add room to the list */
-	public void addRoom(Room room) {
-		roomList.add(room);
+	/**
+	 * Add room to the list.<br>
+	 * <b>Used only to populate fake data!</b>
+	 */
+	private void addRoom(Room room) {
+		databaseHandler.addRoom(room);
+
+		// update UI after addding one room
 		setTotal(getTotal() + room.totalArea());
-		// Log.d("Total", "walls: " + room.wallsArea() + " ceiling: " +
-		// room.ceilingArea() + " | TOTAL: " + getTotal());
+		Log.d(TAG, "walls: " + room.wallsArea() + " ceiling: " + room.ceilingArea() + " | TOTAL: " + getTotal());
 	}
 
 	private void removeLastRoom() {
-		if (!roomList.isEmpty()) {
-			// we need last room to get area size
-			Room last = roomList.get(roomList.size() - 1);
-			// remove room from list
-			roomList.remove(last);
-			// substract last room area from total area
-			setTotal(getTotal() - last.totalArea());
-			// update UI
-			recalculate();
+		// FIXME: We could get latest room before deleting, to substract values
+		// from current total.
+		if (databaseHandler.getRoomsCount() > 0) {
+			databaseHandler.deleteLatestRoom();
 		}
+		// update UI
+		recalculate();
 	}
 
 	/** Clear the list with all rooms */
 	private void removeAllRooms() {
-		if (!roomList.isEmpty()) {
-			roomList.clear();
-			setTotal(0.0);
-			recalculate();
+		// TODO: Add confirmation dialog?
+		if (databaseHandler.getRoomsCount() > 0) {
+			databaseHandler.deleteAllRooms();
 		}
+		recalculate();
 	}
 
 	/** recalculate and update UI */
 	private void recalculate() {
+		//
+		final List<Room> roomList = databaseHandler.getAllRooms();
+		setTotal(0);
+		for (Room room : roomList) {
+			setTotal(getTotal() + room.totalArea());
+		}
+
 		mRooms.setText("" + roomList.size());
 		mTotal.setText("" + getTotal());
+
 		final String cost = getRoomCost(sP.getString(Constants.KEY_PREF_PRICE, "0.00"), getTotal());
 		mCost.setText(cost);
 
@@ -209,26 +221,22 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 	class RoomAdapter extends BaseAdapter {
 
-		private List<Room> rooms = Collections.emptyList();
+		private List<Room> roomList = Collections.emptyList();
 		private final Context context;
 
-		public RoomAdapter(Context context) {
+		public RoomAdapter(Context context, List<Room> roomList) {
 			this.context = context;
-		}
-
-		public void updateRooms(List<Room> rooms) {
-			this.rooms = rooms;
-			notifyDataSetChanged();
+			this.roomList = roomList;
 		}
 
 		@Override
 		public int getCount() {
-			return rooms.size();
+			return roomList.size();
 		}
 
 		@Override
 		public Room getItem(int position) {
-			return rooms.get(position);
+			return roomList.get(position);
 		}
 
 		@Override
@@ -244,6 +252,11 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 			text.setText(getItem(position).toString());
 			return rootView;
+		}
+
+		public void updateRooms(List<Room> roomList) {
+			this.roomList = roomList;
+			notifyDataSetChanged();
 		}
 
 	}

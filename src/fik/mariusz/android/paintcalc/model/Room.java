@@ -4,33 +4,73 @@ import fik.mariusz.android.paintcalc.utils.Utils;
 
 public class Room {
 
-	// Fields to store room dimensions
-	private double l, w, h;
+	private int id;
+	private double lenght;
+	private double width;
+	private double height;
 
-	/**
-	 * Creates room with specified sizes.
-	 * 
-	 * @param l
-	 *            Room length
-	 * @param w
-	 *            Room width
-	 * @param h
-	 *            Room height
-	 */
-	public Room(double l, double w, double h) {
-		this.l = Utils.roundToTwoDecimalPoints(l);
-		this.w = Utils.roundToTwoDecimalPoints(w);
-		this.h = Utils.roundToTwoDecimalPoints(h);
+	public Room() {
+	}
+
+	public Room(double lenght, double width, double height) {
+		this.lenght = Utils.roundToTwoDecimalPoints(lenght);
+		this.width = Utils.roundToTwoDecimalPoints(width);
+		this.height = Utils.roundToTwoDecimalPoints(height);
+	}
+
+	public Room(int id, double lenght, double width, double height) {
+		this.id = id;
+		this.lenght = Utils.roundToTwoDecimalPoints(lenght);
+		this.width = Utils.roundToTwoDecimalPoints(width);
+		this.height = Utils.roundToTwoDecimalPoints(height);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public double getLenght() {
+		return lenght;
+	}
+
+	public void setLenght(double lenght) {
+		this.lenght = lenght;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	@Override
+	public String toString() {
+		// get room sizes
+		return lenght + " * " + width + " * " + height;
 	}
 
 	/** Return room's ceiling area */
 	public Double ceilingArea() {
-		return Utils.roundToTwoDecimalPoints(l * w);
+		return Utils.roundToTwoDecimalPoints(lenght * width);
 	}
 
 	/** Return room's walls area */
 	public Double wallsArea() {
-		return Utils.roundToTwoDecimalPoints((2 * l + 2 * w) * h);
+		return Utils.roundToTwoDecimalPoints((2 * lenght + 2 * width) * height);
 	}
 
 	/** Returns whole room area to paint */
@@ -38,9 +78,4 @@ public class Room {
 		return Utils.roundToTwoDecimalPoints(ceilingArea() + wallsArea());
 	}
 
-	@Override
-	public String toString() {
-		// get room sizes
-		return l + " * " + w + " * " + h;
-	}
 }
