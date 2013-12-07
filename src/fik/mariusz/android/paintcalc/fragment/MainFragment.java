@@ -1,12 +1,5 @@
 package fik.mariusz.android.paintcalc.fragment;
 
-import java.math.BigDecimal;
-import java.security.SecureRandom;
-import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,20 +18,20 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.math.BigDecimal;
+import java.security.SecureRandom;
+import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import fik.mariusz.android.paintcalc.R;
 import fik.mariusz.android.paintcalc.model.Room;
 import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 import fik.mariusz.android.paintcalc.utils.Utils;
 
-/**
- * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
- * contain this fragment must implement the
- * {@link MainFragment.OnFragmentInteractionListener} interface to handle
- * interaction events. Use the {@link MainFragment#newInstance} factory method
- * to create an instance of this fragment.
- * 
- */
 public class MainFragment extends Fragment implements OnItemClickListener {
 
 	private static final String TAG = "MainFragment";
@@ -166,13 +159,13 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	private void removeAllRooms() {
 		// TODO: Add confirmation dialog?
 		if (databaseHandler.getRoomsCount() > 0) {
-			databaseHandler.deleteAllRooms();
+            new RemoveRoomsDialogFragment().show(getFragmentManager(), "RemoveRoomsDialogFragment");
+			// databaseHandler.deleteAllRooms();
 		}
-		recalculate();
 	}
 
 	/** recalculate and update UI */
-	private void recalculate() {
+	public void recalculate() {
 		//
 		final List<Room> roomList = databaseHandler.getAllRooms();
 		setTotal(0);

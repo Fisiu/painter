@@ -23,4 +23,7 @@
     <string name="label_cost">Cost:</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="label_remove_all_rooms">Remove all rooms?</string>
+    <string name="label_all_rooms_get_removed">All rooms will be removed!</string>
+
 </resources>

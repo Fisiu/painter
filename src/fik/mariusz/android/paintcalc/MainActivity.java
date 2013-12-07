@@ -2,18 +2,21 @@ package fik.mariusz.android.paintcalc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import fik.mariusz.android.paintcalc.fragment.MainFragment;
-import fik.mariusz.android.paintcalc.fragment.RoomFragment.OnNewRoomRequestedListener;
+import fik.mariusz.android.paintcalc.fragment.RemoveRoomsDialogFragment;
+import fik.mariusz.android.paintcalc.fragment.RoomFragment;
 import fik.mariusz.android.paintcalc.model.Room;
 import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 
-public class MainActivity extends ActionBarActivity implements OnNewRoomRequestedListener {
+public class MainActivity extends ActionBarActivity implements RoomFragment.OnNewRoomRequestedListener, RemoveRoomsDialogFragment.RemoveRoomsDialogListener {
 
 	private static final String TAG = "MainActivity";
 
@@ -67,6 +70,18 @@ public class MainActivity extends ActionBarActivity implements OnNewRoomRequeste
 		Log.d(TAG, "Adding new room... " + newRoom);
 		databaseHandler.addRoom(newRoom);
 	}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        databaseHandler.deleteAllRooms();
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        mainFragment.recalculate();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // TODO: Special handling when user aborted action?
+    }
 
 	private void setupActionBar() {
 		getSupportActionBar().show();
