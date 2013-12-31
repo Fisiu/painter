@@ -1,8 +1,6 @@
 package fik.mariusz.android.paintcalc.fragment;
 
-import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -180,28 +178,11 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		mRooms.setText("" + roomList.size());
 		mTotal.setText("" + getTotal());
 
-		final String cost = getRoomCost(sP.getString(Constants.KEY_PREF_PRICE, "0.00"), getTotal());
+		final String cost = Utils.getRoomCost(sP.getString(Constants.KEY_PREF_PRICE, "0.00"), getTotal());
 		mCost.setText(cost);
 
 		// update listview items
 		roomAdapter.updateRooms(roomList);
-	}
-
-	/**
-	 * calculate cost of painting room.
-	 * 
-	 * @param price
-	 *            Price for 1m² taken from settings.
-	 * @param meters
-	 *            Total size of room, including wall and ceiling.
-	 * @return Product of <b>meteres</b> and <b>price</b>, rounded up to 2 decimal places.
-	 */
-	private String getRoomCost(String price, double meters) {
-		BigDecimal c = new BigDecimal(price);
-		BigDecimal m = c.multiply(new BigDecimal(meters));
-		NumberFormat n = NumberFormat.getCurrencyInstance();
-		double money = m.doubleValue();
-		return n.format(money);
 	}
 
 	/**
