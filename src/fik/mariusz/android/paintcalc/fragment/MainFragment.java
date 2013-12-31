@@ -130,6 +130,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// TODO Show detailed fragment for selected room.
 		Toast.makeText(getActivity(), "Room " + position + " clicked [" + id + "]", Toast.LENGTH_SHORT).show();
 	}
 
@@ -145,6 +146,9 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		Log.d(TAG, "walls: " + room.wallsArea() + " ceiling: " + room.ceilingArea() + " | TOTAL: " + getTotal());
 	}
 
+	/**
+	 * Deletes recently added room from list and database.
+	 */
 	private void removeLastRoom() {
 		// FIXME: We could get latest room before deleting, to substract values
 		// from current total.
@@ -164,7 +168,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		}
 	}
 
-	/** recalculate and update UI */
+	/** Recalculate and update UI */
 	public void recalculate() {
 		//
 		final List<Room> roomList = databaseHandler.getAllRooms();
@@ -183,6 +187,15 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		roomAdapter.updateRooms(roomList);
 	}
 
+	/**
+	 * calculate cost of painting room.
+	 * 
+	 * @param price
+	 *            Price for 1m² taken from settings.
+	 * @param meters
+	 *            Total size of room, including wall and ceiling.
+	 * @return Product of <b>meteres</b> and <b>price</b>, rounded up to 2 decimal places.
+	 */
 	private String getRoomCost(String price, double meters) {
 		BigDecimal c = new BigDecimal(price);
 		BigDecimal m = c.multiply(new BigDecimal(meters));
