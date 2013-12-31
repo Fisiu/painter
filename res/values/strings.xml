@@ -25,5 +25,7 @@
 
     <string name="label_remove_all_rooms">Remove all rooms?</string>
     <string name="label_all_rooms_get_removed">All rooms will be removed!</string>
+    
+    <string name="room_header_text">Added rooms</string>
 
 </resources>

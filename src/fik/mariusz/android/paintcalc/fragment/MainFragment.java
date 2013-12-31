@@ -87,6 +87,9 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		mTotal = (TextView) view.findViewById(R.id.total);
 		mCost = (TextView) view.findViewById(R.id.cost);
 		roomListView = (ListView) view.findViewById(R.id.room_list);
+		
+		View headerView = inflater.inflate(R.layout.room_list_header, null);
+		roomListView.addHeaderView(headerView);
 
 		roomAdapter = new RoomAdapter(getActivity(), databaseHandler.getAllRooms());
 		roomListView.setAdapter(roomAdapter);
