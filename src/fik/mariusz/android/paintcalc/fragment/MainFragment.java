@@ -86,7 +86,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		View headerView = inflater.inflate(R.layout.room_list_header, null);
 		roomListView.addHeaderView(headerView);
 
-		roomAdapter = new RoomAdapter(getActivity(), databaseHandler.getAllRooms());
+		roomAdapter = new RoomAdapter(getActivity(), databaseHandler.getAllRooms(), sP);
 		roomListView.setAdapter(roomAdapter);
 		roomListView.setOnItemClickListener(this);
 
