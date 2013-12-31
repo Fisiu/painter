@@ -1,6 +1,11 @@
 package fik.mariusz.android.paintcalc.fragment;
 
-import android.content.Context;
+import java.math.BigDecimal;
+import java.security.SecureRandom;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Random;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,19 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.math.BigDecimal;
-import java.security.SecureRandom;
-import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import fik.mariusz.android.paintcalc.R;
+import fik.mariusz.android.paintcalc.adapters.RoomAdapter;
 import fik.mariusz.android.paintcalc.model.Room;
 import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
@@ -87,7 +84,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		mTotal = (TextView) view.findViewById(R.id.total);
 		mCost = (TextView) view.findViewById(R.id.cost);
 		roomListView = (ListView) view.findViewById(R.id.room_list);
-		
+
 		View headerView = inflater.inflate(R.layout.room_list_header, null);
 		roomListView.addHeaderView(headerView);
 
@@ -162,7 +159,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	private void removeAllRooms() {
 		// TODO: Add confirmation dialog?
 		if (databaseHandler.getRoomsCount() > 0) {
-            new RemoveRoomsDialogFragment().show(getFragmentManager(), "RemoveRoomsDialogFragment");
+			new RemoveRoomsDialogFragment().show(getFragmentManager(), "RemoveRoomsDialogFragment");
 			// databaseHandler.deleteAllRooms();
 		}
 	}
@@ -195,8 +192,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	}
 
 	/**
-	 * Populate list with fake data. It allows to test UI layout and
-	 * calculations.
+	 * Populate list with fake data. It allows to test UI layout and calculations.
 	 * 
 	 * @param roomsCount
 	 *            Rooms count to be added to listview.
@@ -214,47 +210,4 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 			}
 		}
 	}
-
-	class RoomAdapter extends BaseAdapter {
-
-		private List<Room> roomList = Collections.emptyList();
-		private final Context context;
-
-		public RoomAdapter(Context context, List<Room> roomList) {
-			this.context = context;
-			this.roomList = roomList;
-		}
-
-		@Override
-		public int getCount() {
-			return roomList.size();
-		}
-
-		@Override
-		public Room getItem(int position) {
-			return roomList.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View view, ViewGroup parent) {
-			// TODO customize list item
-			View rootView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
-			TextView text = (TextView) rootView.findViewById(android.R.id.text1);
-
-			text.setText(getItem(position).toString());
-			return rootView;
-		}
-
-		public void updateRooms(List<Room> roomList) {
-			this.roomList = roomList;
-			notifyDataSetChanged();
-		}
-
-	}
-
 }
