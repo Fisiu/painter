@@ -79,11 +79,18 @@
         android:text="@string/label_cost"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <include
+        android:id="@+id/room_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_cost"
+        layout="@layout/room_list_header" />
+
     <ListView
         android:id="@+id/room_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cost"
+        android:layout_below="@+id/room_list_header"
         android:layout_centerHorizontal="true"
         android:divider="#ff99cc00"
         android:dividerHeight="1dp"
