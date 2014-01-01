@@ -16,29 +16,33 @@ import fik.mariusz.android.paintcalc.model.Room;
 import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 
-public class MainActivity extends ActionBarActivity implements RoomFragment.OnNewRoomRequestedListener, RemoveRoomsDialogFragment.RemoveRoomsDialogListener {
+public class MainActivity extends ActionBarActivity implements RoomFragment.OnNewRoomRequestedListener,
+		RemoveRoomsDialogFragment.RemoveRoomsDialogListener {
 
 	private static final String TAG = "MainActivity";
 
-	public DatabaseHelper databaseHandler;
+	private DatabaseHelper databaseHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.activity_main);
 		setupActionBar();
 
 		databaseHandler = DatabaseHelper.getInstance(this);
 
 		Fragment firstFragment = new MainFragment();
-		firstFragment.setArguments(getIntent().getExtras());
+		firstFragment.setArguments(getIntent().getExtras()); // XXX check args in fragment
 
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, firstFragment).commit();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		Log.d(TAG, "onDestroy()");
+
 		databaseHandler.close();
 	}
 
@@ -71,17 +75,18 @@ public class MainActivity extends ActionBarActivity implements RoomFragment.OnNe
 		databaseHandler.addRoom(newRoom);
 	}
 
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        databaseHandler.deleteAllRooms();
-        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        mainFragment.recalculate();
-    }
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		databaseHandler.deleteAllRooms();
+		MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.fragment_container);
+		mainFragment.recalculate();
+	}
 
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // TODO: Special handling when user aborted action?
-    }
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO: Special handling when user aborted action?
+	}
 
 	private void setupActionBar() {
 		getSupportActionBar().show();
