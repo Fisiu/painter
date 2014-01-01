@@ -45,28 +45,45 @@ public class RoomAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
-		// TODO customize list item
-		View rootView = layoutInflater.inflate(R.layout.room_list_item, parent, false);
-		TextView roomNo = (TextView) rootView.findViewById(R.id.room_list_item_no);
-		TextView wallSize = (TextView) rootView.findViewById(R.id.room_list_item_walls_value);
-		TextView ceilingSize = (TextView) rootView.findViewById(R.id.room_list_item_ceiling_value);
-		TextView roomDimensions = (TextView) rootView.findViewById(R.id.room_list_item_dimensions);
-		TextView roomCost = (TextView) rootView.findViewById(R.id.room_list_item_cost);
+		ViewHolder viewHolder;
+		if (view == null) {
+			view = layoutInflater.inflate(R.layout.room_list_item, parent, false);
+
+			viewHolder = new ViewHolder();
+			viewHolder.roomNo = (TextView) view.findViewById(R.id.room_list_item_no);
+			viewHolder.wallSize = (TextView) view.findViewById(R.id.room_list_item_walls_value);
+			viewHolder.ceilingSize = (TextView) view.findViewById(R.id.room_list_item_ceiling_value);
+			viewHolder.roomDimensions = (TextView) view.findViewById(R.id.room_list_item_dimensions);
+			viewHolder.roomCost = (TextView) view.findViewById(R.id.room_list_item_cost);
+
+			view.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) view.getTag();
+		}
 
 		final Room room = getItem(position);
 		final String price = sp.getString(Constants.KEY_PREF_PRICE, "0.00");
 
-		roomNo.setText(position + 1 + "");
-		wallSize.setText(room.wallsArea().toString());
-		ceilingSize.setText(room.ceilingArea().toString());
-		roomDimensions.setText("[" + room.getLenght() + " x " + room.getWidth() + " x " + room.getHeight() + "]");
-		roomCost.setText(Utils.getRoomCost(price, room.totalArea()));
+		viewHolder.roomNo.setText(position + 1 + "");
+		viewHolder.wallSize.setText(room.wallsArea().toString());
+		viewHolder.ceilingSize.setText(room.ceilingArea().toString());
+		viewHolder.roomDimensions.setText("[" + room.getLenght() + " x " + room.getWidth() + " x " + room.getHeight()
+				+ "]");
+		viewHolder.roomCost.setText(Utils.getRoomCost(price, room.totalArea()));
 
-		return rootView;
+		return view;
 	}
 
 	public void updateRooms(List<Room> roomList) {
 		this.roomList = roomList;
 		notifyDataSetChanged();
+	}
+
+	static class ViewHolder {
+		TextView roomNo;
+		TextView wallSize;
+		TextView ceilingSize;
+		TextView roomDimensions;
+		TextView roomCost;
 	}
 }
