@@ -156,7 +156,6 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 	/** Clear the list with all rooms */
 	private void removeAllRooms() {
-		// TODO: Add confirmation dialog?
 		if (databaseHandler.getRoomsCount() > 0) {
 			new RemoveRoomsDialogFragment().show(getFragmentManager(), "RemoveRoomsDialogFragment");
 			// databaseHandler.deleteAllRooms();
