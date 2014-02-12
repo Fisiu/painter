@@ -54,7 +54,8 @@ public class RoomAdapter extends BaseAdapter {
 			viewHolder.wallSize = (TextView) view.findViewById(R.id.room_list_item_walls_value);
 			viewHolder.ceilingSize = (TextView) view.findViewById(R.id.room_list_item_ceiling_value);
 			viewHolder.roomDimensions = (TextView) view.findViewById(R.id.room_list_item_dimensions);
-			viewHolder.roomCost = (TextView) view.findViewById(R.id.room_list_item_cost);
+			viewHolder.roomWallsCost = (TextView) view.findViewById(R.id.room_list_item_walls_cost);
+			viewHolder.roomTotalCost = (TextView) view.findViewById(R.id.room_list_item_total_cost);
 
 			view.setTag(viewHolder);
 		} else {
@@ -69,7 +70,8 @@ public class RoomAdapter extends BaseAdapter {
 		viewHolder.ceilingSize.setText(room.ceilingArea().toString());
 		viewHolder.roomDimensions.setText("[" + room.getLenght() + " x " + room.getWidth() + " x " + room.getHeight()
 				+ "]");
-		viewHolder.roomCost.setText(Utils.getRoomCost(price, room.totalArea()));
+		viewHolder.roomWallsCost.setText(Utils.getRoomCost(price, room.wallsArea()));
+		viewHolder.roomTotalCost.setText(Utils.getRoomCost(price, room.totalArea()));
 
 		return view;
 	}
@@ -84,6 +86,7 @@ public class RoomAdapter extends BaseAdapter {
 		TextView wallSize;
 		TextView ceilingSize;
 		TextView roomDimensions;
-		TextView roomCost;
+		TextView roomWallsCost;
+		TextView roomTotalCost;
 	}
 }

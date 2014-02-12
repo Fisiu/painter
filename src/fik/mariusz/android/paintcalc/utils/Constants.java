@@ -10,5 +10,5 @@ public class Constants {
 
 	// preferences
 	public static final String KEY_PREF_PRICE = "pref_price";
-
+	public static final String KEY_PREF_COST_WITH_CEILING = "pref_with_ceiling";
 }

@@ -4,5 +4,8 @@
     <string name="settings_title">Settings</string>
     <string name="settings_price_title">Price for 1m²</string>
     <string name="settings_price_summary">Current price</string>
+    <string name="settings_with_ceiling_title">Include ceiling</string>
+    <string name="settings_with_ceiling_summary_off">Not included</string>
+    <string name="settings_with_ceiling_summary_on">Included</string>
 
 </resources>

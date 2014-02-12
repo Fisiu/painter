@@ -2,11 +2,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <EditTextPreference
-        android:id="@+id/tempInput"
         android:dialogIcon="@android:drawable/ic_menu_info_details"
         android:icon="@android:drawable/ic_dialog_info"
         android:inputType="numberDecimal"
         android:key="pref_price"
         android:title="@string/settings_price_title" />
+
+    <SwitchPreference
+        android:key="pref_with_ceiling"
+        android:summaryOff="@string/settings_with_ceiling_summary_off"
+        android:summaryOn="@string/settings_with_ceiling_summary_on"
+        android:title="@string/settings_with_ceiling_title" />
 
 </PreferenceScreen>

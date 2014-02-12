@@ -169,7 +169,12 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		final List<Room> roomList = databaseHandler.getAllRooms();
 		setTotal(0);
 		for (Room room : roomList) {
-			setTotal(getTotal() + room.totalArea());
+			// if ceiling not included, use walls area as total
+			if (sP.getBoolean(Constants.KEY_PREF_COST_WITH_CEILING, false)) {
+				setTotal(getTotal() + room.totalArea());
+			} else {
+				setTotal(getTotal() + room.wallsArea());
+			}
 		}
 
 		mRooms.setText("" + roomList.size());
