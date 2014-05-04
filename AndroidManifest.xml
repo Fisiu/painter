@@ -9,10 +9,18 @@
         android:targetSdkVersion="15" />
 
     <application
+        android:name="fik.mariusz.android.paintcalc.Painter"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat" >
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="PaintCalc.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+
         <activity
             android:name="fik.mariusz.android.paintcalc.MainActivity"
             android:label="@string/app_name" >

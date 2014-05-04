@@ -1,76 +1,75 @@
 package fik.mariusz.android.paintcalc.model;
 
+import java.util.List;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
 import fik.mariusz.android.paintcalc.utils.Utils;
 
-public class Room {
+@Table(name = "Rooms")
+public class Room extends Model {
 
-	private int id;
-	private double lenght;
+	@Column(name = "Length")
+	private double length;
+
+	@Column(name = "Width")
 	private double width;
+
+	@Column(name = "Height")
 	private double height;
 
-	public Room() {
-	}
-
-	public Room(double lenght, double width, double height) {
-		this.lenght = Utils.roundToTwoDecimalPoints(lenght);
-		this.width = Utils.roundToTwoDecimalPoints(width);
-		this.height = Utils.roundToTwoDecimalPoints(height);
-	}
-
-	public Room(int id, double lenght, double width, double height) {
-		this.id = id;
-		this.lenght = Utils.roundToTwoDecimalPoints(lenght);
-		this.width = Utils.roundToTwoDecimalPoints(width);
-		this.height = Utils.roundToTwoDecimalPoints(height);
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public double getLenght() {
-		return lenght;
-	}
-
-	public void setLenght(double lenght) {
-		this.lenght = lenght;
+	public double getLength() {
+		return length;
 	}
 
 	public double getWidth() {
 		return width;
 	}
 
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
 	public double getHeight() {
 		return height;
 	}
 
-	public void setHeight(double height) {
-		this.height = height;
+	public Room() {
+		super();
 	}
 
-	@Override
-	public String toString() {
-		// get room sizes
-		return lenght + " * " + width + " * " + height;
+	public Room(double length, double width, double height) {
+		super();
+		this.length = Utils.roundToTwoDecimalPoints(length);
+		this.width = Utils.roundToTwoDecimalPoints(width);
+		this.height = Utils.roundToTwoDecimalPoints(height);
+	}
+
+	/**
+	 * Get last added room (with the highest Id)
+	 * 
+	 * @return Room
+	 */
+	public static Room getLastAdded() {
+		return new Select().from(Room.class).orderBy("Id DESC").executeSingle();
+	}
+
+	/**
+	 * Get list of all rooms
+	 * 
+	 * @return list of rooms
+	 */
+	public static List<Room> getAll() {
+		return new Select().from(Room.class).execute();
 	}
 
 	/** Return room's ceiling area */
 	public Double ceilingArea() {
-		return Utils.roundToTwoDecimalPoints(lenght * width);
+		return Utils.roundToTwoDecimalPoints(length * width);
 	}
 
 	/** Return room's walls area */
 	public Double wallsArea() {
-		return Utils.roundToTwoDecimalPoints((2 * lenght + 2 * width) * height);
+		return Utils.roundToTwoDecimalPoints((2 * length + 2 * width) * height);
 	}
 
 	/** Returns whole room area to paint */

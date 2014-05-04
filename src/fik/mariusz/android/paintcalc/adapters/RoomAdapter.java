@@ -68,7 +68,7 @@ public class RoomAdapter extends BaseAdapter {
 		viewHolder.roomNo.setText(position + 1 + "");
 		viewHolder.wallSize.setText(room.wallsArea().toString());
 		viewHolder.ceilingSize.setText(room.ceilingArea().toString());
-		viewHolder.roomDimensions.setText("[" + room.getLenght() + " x " + room.getWidth() + " x " + room.getHeight()
+		viewHolder.roomDimensions.setText("[" + room.getLength() + " x " + room.getWidth() + " x " + room.getHeight()
 				+ "]");
 		viewHolder.roomWallsCost.setText(Utils.getRoomCost(price, room.wallsArea()));
 		viewHolder.roomTotalCost.setText(Utils.getRoomCost(price, room.totalArea()));

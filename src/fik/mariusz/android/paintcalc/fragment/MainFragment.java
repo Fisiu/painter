@@ -1,6 +1,5 @@
 package fik.mariusz.android.paintcalc.fragment;
 
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +21,6 @@ import android.widget.Toast;
 import fik.mariusz.android.paintcalc.R;
 import fik.mariusz.android.paintcalc.adapters.RoomAdapter;
 import fik.mariusz.android.paintcalc.model.Room;
-import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 import fik.mariusz.android.paintcalc.utils.Utils;
 
@@ -44,9 +41,6 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	// preferences
 	private SharedPreferences sP;
 
-	// database handler
-	private DatabaseHelper databaseHandler;
-
 	double getTotal() {
 		return total;
 	}
@@ -65,7 +59,6 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 		setHasOptionsMenu(true);
 		sP = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		databaseHandler = DatabaseHelper.getInstance(getActivity());
 
 		// fake data to test UI and calculations
 		// populateWithFakeData(47);
@@ -83,7 +76,7 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 		mCost = (TextView) view.findViewById(R.id.cost);
 		roomListView = (ListView) view.findViewById(R.id.room_list);
 
-		roomAdapter = new RoomAdapter(getActivity(), databaseHandler.getAllRooms(), sP);
+		roomAdapter = new RoomAdapter(getActivity(), Room.getAll(), sP);
 		roomListView.setAdapter(roomAdapter);
 		roomListView.setOnItemClickListener(this);
 
@@ -130,25 +123,16 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	}
 
 	/**
-	 * Add room to the list.<br>
-	 * <b>Used only to populate fake data!</b>
-	 */
-	private void addRoom(Room room) {
-		databaseHandler.addRoom(room);
-
-		// update UI after addding one room
-		setTotal(getTotal() + room.totalArea());
-		Log.d(TAG, "walls: " + room.wallsArea() + " ceiling: " + room.ceilingArea() + " | TOTAL: " + getTotal());
-	}
-
-	/**
 	 * Deletes recently added room from list and database.
 	 */
 	private void removeLastRoom() {
 		// FIXME: We could get latest room before deleting, to substract values
 		// from current total.
-		if (databaseHandler.getRoomsCount() > 0) {
-			databaseHandler.deleteLatestRoom();
+		final int items = Room.getAll().size();
+
+		if (items > 0) {
+			Room latest = Room.getLastAdded();
+			Room.delete(Room.class, latest.getId());
 		}
 		// update UI
 		recalculate();
@@ -156,16 +140,15 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 
 	/** Clear the list with all rooms */
 	private void removeAllRooms() {
-		if (databaseHandler.getRoomsCount() > 0) {
+		if (Room.getAll().size() > 0) {
 			new RemoveRoomsDialogFragment().show(getFragmentManager(), "RemoveRoomsDialogFragment");
-			// databaseHandler.deleteAllRooms();
 		}
 	}
 
 	/** Recalculate and update UI */
 	public void recalculate() {
 		//
-		final List<Room> roomList = databaseHandler.getAllRooms();
+		final List<Room> roomList = Room.getAll();
 		setTotal(0);
 		for (Room room : roomList) {
 			// if ceiling not included, use walls area as total
@@ -194,14 +177,13 @@ public class MainFragment extends Fragment implements OnItemClickListener {
 	 */
 	@SuppressWarnings("unused")
 	private void populateWithFakeData(int roomsCount) {
-		Random random = new SecureRandom();
+		Random random = new Random();
 		for (int i = 0; i < roomsCount; i++) {
 			double l = random.nextDouble() * 10;
 			double w = random.nextDouble() * 10;
 			double h = random.nextDouble() * 10;
 			if (l > 0 && w > 0 && h > 0) {
-				Room room = new Room(l, w, h);
-				addRoom(room);
+				new Room(l, w, h).save();
 			}
 		}
 	}

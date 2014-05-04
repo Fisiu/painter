@@ -9,19 +9,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.activeandroid.query.Delete;
+
 import fik.mariusz.android.paintcalc.fragment.MainFragment;
 import fik.mariusz.android.paintcalc.fragment.RemoveRoomsDialogFragment;
 import fik.mariusz.android.paintcalc.fragment.RoomFragment;
 import fik.mariusz.android.paintcalc.model.Room;
-import fik.mariusz.android.paintcalc.sqlite.DatabaseHelper;
 import fik.mariusz.android.paintcalc.utils.Constants;
 
 public class MainActivity extends ActionBarActivity implements RoomFragment.OnNewRoomRequestedListener,
 		RemoveRoomsDialogFragment.RemoveRoomsDialogListener {
 
 	private static final String TAG = "MainActivity";
-
-	private DatabaseHelper databaseHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +29,10 @@ public class MainActivity extends ActionBarActivity implements RoomFragment.OnNe
 		setContentView(R.layout.activity_main);
 		setupActionBar();
 
-		databaseHandler = DatabaseHelper.getInstance(this);
-
 		Fragment firstFragment = new MainFragment();
 		firstFragment.setArguments(getIntent().getExtras()); // XXX check args in fragment
 
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, firstFragment).commit();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.d(TAG, "onDestroy()");
-
-		databaseHandler.close();
 	}
 
 	@Override
@@ -72,12 +61,12 @@ public class MainActivity extends ActionBarActivity implements RoomFragment.OnNe
 		// lets create new room with those values
 		final Room newRoom = new Room(l, w, h);
 		Log.d(TAG, "Adding new room... " + newRoom);
-		databaseHandler.addRoom(newRoom);
+		newRoom.save();
 	}
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		databaseHandler.deleteAllRooms();
+		new Delete().from(Room.class).execute();
 		MainFragment mainFragment = (MainFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.fragment_container);
 		mainFragment.recalculate();
